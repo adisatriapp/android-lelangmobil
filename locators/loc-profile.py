@@ -1,0 +1,1 @@
+btn_logout = "//android.view.View[@content-desc='Logout']"

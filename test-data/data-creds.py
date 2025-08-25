@@ -1,0 +1,5 @@
+PLATFORM_NAME = "Android"
+PLATFORM_VERSION =   "10"
+DEVICE_NAME =       "Android Emulator"
+APP =  "${EXECDIR}/../app/gvm-staging.apk"
+APPIUM_SERVER =     "http://localhost:4723"

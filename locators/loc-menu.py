@@ -1,0 +1,4 @@
+btn_beranda = '//android.widget.ImageView[@content-desc="BERANDA"]'
+btn_portofolio = '//android.widget.ImageView[@content-desc="PORTFOLIO"]'
+btn_liveChat = '//android.widget.ImageView[@content-desc="LIVE CHAT"]'
+btn_profile = '//android.widget.ImageView[@content-desc="PROFIL"]'

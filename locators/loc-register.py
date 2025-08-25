@@ -1,0 +1,6 @@
+input_emailDaftar = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[1]'
+input_namaLengkap = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[2]'
+input_noHP = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[3]'
+input_passwordDaftar = '//android.widget.EditText[@hint="Buat Password"]'
+input_passwordDaftarKonfirmasi = '//android.widget.EditText[@hint="Ulangi Password"]'
+btn_submitDaftar = '//android.view.View[@content-desc="Daftar"]'
