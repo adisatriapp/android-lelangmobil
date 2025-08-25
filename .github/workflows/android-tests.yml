@@ -1,0 +1,71 @@
+name: Android UI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  robot-android-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install robotframework robotframework-appiumlibrary Appium-Python-Client
+
+      - name: Install Appium and Android driver
+        run: |
+          npm i -g appium@2
+          appium driver install --source=npm appium-uiautomator2-driver@2.45.1
+
+      - name: Ensure APK exists
+        run: |
+          test -f app/gvm-staging.apk || (echo "APK not found at app/gvm-staging.apk" && exit 1)
+
+      - name: Run tests on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          script: |
+            appium server -p 4723 --log-timestamp &
+            APPIUM_PID=$!
+            echo "Waiting for Appium to start..." && sleep 5
+            robot tests/android_test.robot || TEST_EXIT=$?
+            echo "Stopping Appium..." && kill $APPIUM_PID || true
+            exit ${TEST_EXIT:-0}
+
+      - name: Upload Robot Framework artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-artifacts
+          path: |
+            output.xml
+            log.html
+            report.html
