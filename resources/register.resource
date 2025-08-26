@@ -4,7 +4,7 @@ Library    String
 Library    OperatingSystem
 
 *** Variables ***
-${CREDS_PY}    ${OUTPUT DIR}/test-data/data-auth.py
+${CREDS_PY}    ${OUTPUT DIR}/test_data/dataAuth.py
 
 *** Keywords ***
 Go to Register Page
@@ -19,7 +19,6 @@ Register using valid data
     ${randNumber}=    Generate Random String   9    [NUMBERS]
     ${rand}=    Generate Random String   10    [LETTERS][NUMBERS]
     ${EMAIL}=    Set Variable    testlogique-${rand}@example.com
-    ${PASSWORD}=    Set Variable    Logique${rand}
     
     # Check if file exists and update data_email, or create new if it doesn't exist
     ${file_exists}=    Run Keyword And Return Status    File Should Exist    ${CREDS_PY}
@@ -33,34 +32,28 @@ Register using valid data
         # Find and replace data_email line, or add if not found
         ${email_line_found}=    Set Variable    False
         ${updated_content}=    Set Variable    ${EMPTY}
-        ${updated_conten2}=    Set Variable    ${EMPTY}
         
         FOR    ${line}    IN    @{lines}
             ${is_email_line}=    Run Keyword And Return Status    Should Contain    ${line}    data_email
             IF    ${is_email_line}
                 ${updated_content}=    Catenate    SEPARATOR=${newline}    ${updated_content}    data_email = "${EMAIL}"
-                ${updated_content2}=    Catenate    SEPARATOR=${newline}    ${updated_content}    data_password = "${PASSWORD}"
                 ${email_line_found}=    Set Variable    True
             ELSE
                 ${updated_content}=    Catenate    SEPARATOR=${newline}    ${updated_content}    ${line}
-                ${updated_content2}=    Catenate    SEPARATOR=${newline}    ${updated_content}    ${line}
             END
         END
         
         # If email line wasn't found, add it
         IF    not ${email_line_found}
             ${updated_content}=    Catenate    SEPARATOR=${newline}    ${updated_content}    data_email = "${EMAIL}"
-            ${updated_content2}=    Catenate    SEPARATOR=${newline}    ${updated_content}    data_password = "${PASSWORD}"
         END
         
         # Write updated content back to file
         Create File    ${CREDS_PY}    ${updated_content}${newline}    encoding=UTF-8
-        Create File    ${CREDS_PY}    ${updated_content2}${newline}    encoding=UTF-8
     ELSE
         # Create new file if it doesn't exist
         ${content}=     Catenate    SEPARATOR=
         ...             data_email = "${EMAIL}"${newline}
-        ...             data_password = "${PASSWORD}"${newline}
         Create File     ${CREDS_PY}    ${content}    encoding=UTF-8
     END
 
@@ -73,9 +66,9 @@ Register using valid data
     Input Text    ${input_noHP}    0825${randNumber}
 
     Click Element    ${input_passwordDaftar}
-    Input Text    ${input_passwordDaftar}    ${PASSWORD}
+    Input Text    ${input_passwordDaftar}    ${data_password}
     Click Element    ${input_passwordDaftarKonfirmasi}
-    Input Text    ${input_passwordDaftarKonfirmasi}    ${PASSWORD}
+    Input Text    ${input_passwordDaftarKonfirmasi}    ${data_password}
 
     Click Element    ${btn_submitDaftar}
 

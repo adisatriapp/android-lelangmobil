@@ -22,3 +22,9 @@ Login using valid credentials
 
 Verify Login Success
     Element Should Be Visible    ${btn_beranda}
+
+Click logout
+    Click Element    ${btn_logout}
+
+Successfully logout
+    Wait Until Element Is Visible    ${btn_ajukanGadai}
